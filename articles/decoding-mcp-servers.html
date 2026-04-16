@@ -1,0 +1,589 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Decoding MCP Servers | Harshit Agarwal</title>
+
+  <meta name="author" content="Harshit Agarwal">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="../stylesheet.css">
+  <style>
+    .article-body blockquote {
+      font-size: 14px;
+      margin: 16px 0;
+      padding: 12px 16px;
+      border-left: 3px solid rgb(55, 53, 47);
+      background: transparent;
+    }
+
+    .article-body blockquote.callout {
+      background: rgba(240, 239, 237, 1);
+      border-radius: 6px;
+      border-left: none;
+      padding: 16px;
+    }
+
+    .article-body code {
+      background: rgba(135, 131, 120, 0.15);
+      border-radius: 3px;
+      padding: 0.2em 0.4em;
+      font-size: 85%;
+      color: #eb5757;
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    .article-body h2 {
+      margin-top: 28px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 22px;
+    }
+
+    .article-body h3 {
+      margin-top: 24px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 17px;
+      font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    }
+
+    .article-body p {
+      line-height: 1.6;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+
+    .article-body ul {
+      padding-inline-start: 1.7em;
+      margin: 0.6em 0;
+    }
+
+    .article-body ul li {
+      line-height: 1.6;
+      padding-left: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .article-body .highlight-heading {
+      background: rgba(211, 168, 0, 0.137);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .article-body .code-highlight {
+      background: rgba(211, 168, 0, 0.137);
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 6px 0;
+    }
+
+    .article-body .simple-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.9em;
+    }
+
+    .article-body .simple-table th {
+      background: rgba(211, 168, 0, 0.137);
+      padding: 8px 12px;
+      text-align: left;
+      border: 1px solid rgba(55, 53, 47, 0.09);
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .article-body .simple-table td {
+      padding: 8px 12px;
+      border: 1px solid rgba(55, 53, 47, 0.09);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <table
+    style="width:100%;max-width:800px;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+    <tbody>
+      <tr>
+        <td style="padding:0" class="article-body">
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:2.5%;width:100%;vertical-align:middle">
+                  <p class="name" style="text-align:center;">Decoding MCP Servers</p>
+                  <p style="text-align:center">
+                    <a href="../index.html">Home</a> &nbsp;/&nbsp;
+                    <a href="index.html">Articles</a> &nbsp;/&nbsp;
+                    <a href="mailto:harshitagarwalsmt@gmail.com">Email</a>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Cover Image - full width below title -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:0 2.5%;width:100%;">
+                  <img src="../images/mcp-cover.jpeg"
+                    style="width:100%;height:250px;object-fit:cover;object-position:center 50%;display:block;border-radius:4px 4px 0 0;"
+                    alt="Google DeepMind cover image">
+                  <p style="margin:0;padding:4px 8px;font-size:11px;color:rgba(55,53,47,0.5);background:rgba(240,239,237,0.5);border-radius:0 0 4px 4px;">
+                    Image: Google DeepMind
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Intro -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <p>
+                    MCP stands for Model Context Protocol. In the simplest terms, it's what allows your AI to talk
+                    to the apps you use every day. Gmail, Notion, Figma, Zoom — none of these work with AI out of
+                    the box. MCP builds the bridge between them.
+                  </p>
+                  <p>
+                    Think of it this way — your AI is smart, but it's been locked in a room. MCP opens the door.
+                  </p>
+                  <p>
+                    These MCP servers can be officially built by the company behind the app, put together by the
+                    open-source community, or even built by you from scratch.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Why Exactly MCP? -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">Why Exactly MCP?</span></h2>
+                  <p>
+                    Let me paint you a picture.
+                  </p>
+                  <p>
+                    You and your friends are planning a <strong>dream trip to Japan</strong>.
+                    You jumped on <strong>Zoom</strong> and spent an evening deciding the whole itinerary together —
+                    which cities, which days, who's responsible for what. You made a <strong>Notion</strong> page to
+                    document everything. Booked the tickets, and the confirmation landed straight in <strong>Gmail</strong>.
+                  </p>
+                  <p>
+                    Everything is planned. Everyone is excited.
+                  </p>
+                  <p>
+                    But the information? <strong>It's everywhere.</strong>
+                  </p>
+                  <p>
+                    The city decisions are buried in a Zoom recording nobody wants to rewatch. The task list is
+                    half-updated in Notion. The booking details are somewhere in Gmail under a hundred other emails.
+                  </p>
+                  <p>
+                    You just want <strong>one clean page</strong> — the Notion doc — with everything in it. The
+                    agreed itinerary from the call, the day-by-day plan, and the booking confirmation details. All
+                    in one place.
+                  </p>
+                  <p>
+                    But pulling that together manually? That's another hour of your Sunday gone.
+                  </p>
+                  <p>
+                    <strong>That's exactly where MCP comes in.</strong>
+                  </p>
+                  <p>
+                    With MCP, you just tell your AI —
+                  </p>
+                  <blockquote>
+                    <em>"Read the Zoom call recap, pull the booking confirmation from Gmail, and update my Notion
+                      Japan trip page with the full itinerary and ticket details."</em>
+                  </blockquote>
+                  <p>
+                    And it's done. Your Notion page — complete, organised, and ready to share with the group.
+                  </p>
+                  <p>
+                    <strong>No tab switching. No copy pasting. No wasted Sunday.</strong>
+                  </p>
+                  <blockquote>
+                    MCP gives your AI the ability to actually <em>reach into</em> your apps and work with your real
+                    information — turning a scattered mess across three apps into exactly what you wanted, in one place.
+                  </blockquote>
+                  <p>
+                    That's the whole point of MCP — your apps don't live in separate worlds anymore. They're all
+                    connected to one AI that knows how to work with all of them.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- What else can MCP Server do? -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">What Else Can MCP Servers Do?</span></h2>
+                  <p>
+                    Each app you use daily can expose a set of tools through its MCP server.
+                  </p>
+                  <table class="simple-table">
+                    <thead>
+                      <tr>
+                        <th>App</th>
+                        <th>Tool</th>
+                        <th>Use Case</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Gmail</strong></td>
+                        <td>Search inbox, read threads, draft replies</td>
+                        <td>Find project emails and auto-draft context-aware responses without leaving your AI tool</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Notion</strong></td>
+                        <td>Query databases, update page properties, create entries</td>
+                        <td>Ask "what's the status of Project X?" and instantly get wiki answers or update task statuses</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Figma</strong></td>
+                        <td>Read design files, extract tokens, inspect layers</td>
+                        <td>Pull exact hex codes, font sizes, and CSS properties from a design file directly into your code</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Zoom</strong></td>
+                        <td>Fetch transcripts, list recordings, parse speakers</td>
+                        <td>Grab last week's meeting transcript and auto-generate a formatted list of action items</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>And there are many more apps that now support MCP.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- MCP Architecture -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">MCP Architecture</span></h2>
+                  <p>
+                    Now you might be wondering — how does any of this actually work behind the scenes? What's really
+                    happening when you send that one message and Claude reaches into three different apps at once?
+                    Let's break it down.
+                  </p>
+                  <p>The three basic components involved in this workflow are —</p>
+                  <ul>
+                    <li><strong>MCP Host</strong>: The AI application that coordinates and manages one or multiple
+                      MCP clients</li>
+                    <li><strong>MCP Client</strong>: A component that maintains a 1:1 connection with an MCP server —
+                      it sends requests (such as calling tools or reading resources) and receives responses, then
+                      passes that information back to the MCP host</li>
+                    <li><strong>MCP Server</strong>: A program that provides context to MCP clients</li>
+                  </ul>
+
+                  <table class="simple-table">
+                    <thead>
+                      <tr>
+                        <th>MCP Component</th>
+                        <th>What it is?</th>
+                        <th>What it is in our case?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>MCP Host</td>
+                        <td>The AI app you're talking to</td>
+                        <td>Claude Desktop</td>
+                      </tr>
+                      <tr>
+                        <td>MCP Client</td>
+                        <td>The connection handler inside Claude</td>
+                        <td><strong>One client per app</strong> — so 3 clients total (one for Zoom, one for Gmail, one for Notion)</td>
+                      </tr>
+                      <tr>
+                        <td>MCP Server</td>
+                        <td>The program exposing each app's data</td>
+                        <td>Zoom MCP server, Gmail MCP server, Notion MCP server</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p style="margin-top:20px;">At its core, every MCP server is built on two layers —</p>
+                  <p>
+                    <strong>Data layer</strong> — <em>What</em> gets said. It's the actual conversation between the
+                    client and server. What tools are available, what resources can be accessed, what's being
+                    requested, what's being sent back. This includes:
+                  </p>
+                  <ul>
+                    <li><strong>Lifecycle management</strong> — the handshake. Client and server introduce themselves,
+                      agree on what each can do, and properly disconnect when done.</li>
+                    <li><strong>Server features</strong> — what the server puts on the table. Tools, data, and
+                      templates for the AI to use.</li>
+                    <li><strong>Client features</strong> — the reverse. Server can also ask the client things —
+                      generate a response, ask the user a question, send a log message. Not just one way traffic.</li>
+                    <li><strong>Utility features</strong> — the extras. Notify me when something changes, or show
+                      me the progress of something that's taking a while.</li>
+                  </ul>
+
+                  <p>
+                    <strong>Transport layer</strong> — <em>How</em> it gets delivered. It's the road the conversation
+                    travels on. Are they talking locally on the same machine, or over the internet? This layer doesn't
+                    care about what's being said — it just makes sure the message gets from A to B safely.
+                  </p>
+                  <ul>
+                    <li><strong>Stdio transport</strong> — designed for local use. Client and server run on the same
+                      machine and communicate directly. Fast, no internet needed, no overhead.</li>
+                    <li><strong>Streamable HTTP transport</strong> — remote. Works over the internet. Supports
+                      authentication like API keys and OAuth so only the right people can connect. (This replaced
+                      the older HTTP+SSE transport from earlier versions of the MCP spec.)</li>
+                  </ul>
+
+                  <blockquote class="callout">
+                    The client side is built directly into your AI app like Claude or Cursor and works completely
+                    invisibly in the background — you'll never see it or touch it. So in this article, I am
+                    focusing purely on the server side — which is the part that actually matters to most people.
+                  </blockquote>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- A Closer Look at MCP Servers -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">A Closer Look at MCP Servers</span></h2>
+                  <p>
+                    An MCP server is simply a program that gives your AI access to something — a tool, an app, a
+                    file, a database. It's the bridge between your AI and the real world.
+                  </p>
+                  <p>
+                    Some common examples you might already recognise — a server that lets your AI read files, one
+                    that connects to GitHub, one that checks your calendar, one that sends Slack messages. Each app
+                    gets its own server.
+                  </p>
+
+                  <h3 style="margin-top:24px;">What a Server Can Actually Do</h3>
+                  <p>Every MCP server is built around three things it can offer your AI:</p>
+                  <p>
+                    <strong>Tools</strong> — things the AI can <em>do</em>. Send a message, create a calendar event,
+                    search for flights, write to a database. The AI decides when to use these based on what you ask it.
+                  </p>
+                  <p>
+                    <strong>Resources</strong> — things the AI can <em>read</em>. Your documents, a database, a
+                    knowledge base. Read only — the AI looks but doesn't touch.
+                  </p>
+                  <p>
+                    <strong>Prompts</strong> — ready made instructions that tell the AI exactly how to handle a
+                    specific task. Like a cheat sheet for the AI — <em>"when the user asks to plan a trip, here's
+                      how to approach it."</em>
+                  </p>
+
+                  <h3 style="margin-top:24px;">How Tools Actually Work</h3>
+                  <p>
+                    Every tool has a name, a description, and a defined set of inputs it expects. When you ask your
+                    AI something, it scans the available tools, picks the right one, and calls it with the correct
+                    inputs. Behind the scenes there are just two operations:
+                  </p>
+                  <p class="code-highlight">
+                    <code>tools/list</code> — the AI first asks the server <em>"what tools do you have?"</em>
+                  </p>
+                  <p class="code-highlight">
+                    <code>tools/call</code> — then it says <em>"okay, run this one with these inputs"</em>
+                  </p>
+                  <p>
+                    So for the Japan trip — Claude first checks what the Notion server can do, finds the update page
+                    tool, and calls it with your itinerary details. That's it.
+                  </p>
+
+                  <h3 style="margin-top:24px;">How Resources Actually Work</h3>
+                  <p>
+                    Every resource has a unique address — think of it like a web link, but for data. Resources come
+                    in two types — <strong>fixed</strong> ones that always point to the same thing, and
+                    <strong>dynamic</strong> ones that accept parameters like a city name or a date.
+                  </p>
+                  <p>
+                    <code>resources/list</code> — discover what data is available<br>
+                    <code>resources/read</code> — actually fetch it
+                  </p>
+
+                  <h3 style="margin-top:24px;">How Prompts Actually Work</h3>
+                  <p>
+                    Prompts are templates with slots you fill in. Like a form. You pick the prompt, fill in the
+                    details, and the AI knows exactly how to handle the rest.
+                  </p>
+                  <p>
+                    <code>prompts/list</code> — discover what templates are available<br>
+                    <code>prompts/get</code> — fetch the full template with its required inputs
+                  </p>
+                  <p>
+                    Most apps expose these as <strong>slash commands</strong> — like typing <code>/plan-vacation</code>
+                    and filling in destination, budget, dates. The AI then runs the whole workflow automatically.
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Bringing It All Together -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">Bringing It All Together</span></h2>
+                  <p>
+                    This is where MCP gets really powerful — not just one server, but multiple servers all working
+                    together through a single conversation with your AI. You've already seen <em>what</em> happened
+                    with the Japan trip. Now let's go one level deeper and see <em>how</em> it actually worked behind
+                    the scenes — the exact MCP operations that fired when you sent that one message.
+                  </p>
+
+                  <p><strong>Step 1 — You send one message</strong></p>
+                  <blockquote>
+                    <em>"Read the Zoom call recap, pull the booking confirmation from Gmail, and update my Notion
+                      Japan trip page with the full itinerary and ticket details."</em>
+                  </blockquote>
+                  <p>That single message triggers a precise sequence of MCP operations across three servers.</p>
+
+                  <p><strong>Step 2 — Claude discovers what each server can do</strong></p>
+                  <p>
+                    Before touching anything, Claude calls <code>tools/list</code> on each connected server to find
+                    out what's available.
+                  </p>
+                  <ul>
+                    <li>Zoom MCP server returns tools like <code>get_transcript</code> and
+                      <code>list_recordings</code></li>
+                    <li>Gmail MCP server returns tools like <code>search_emails</code> and
+                      <code>read_thread</code></li>
+                    <li>Notion MCP server returns tools like <code>update_page</code> and
+                      <code>query_database</code></li>
+                  </ul>
+                  <p>Claude now knows exactly what it can do — and what it can't.</p>
+
+                  <p><strong>Step 3 — Claude reads your data first</strong></p>
+                  <p>
+                    With the tools mapped out, Claude calls <code>tools/call</code> on each server to pull in the
+                    actual content — using <code>get_transcript</code> on Zoom, <code>read_thread</code> on Gmail,
+                    and <code>query_database</code> on Notion to fetch your existing page. It gathers everything
+                    before taking any action. Just like a good assistant who reads the full brief before getting
+                    started.
+                  </p>
+
+                  <p><strong>Step 4 — Claude takes one targeted action</strong></p>
+                  <p>
+                    Now that it has all the context, it makes a single write call — <code>tools/call</code> with
+                    <code>update_page</code> on the Notion server — passing in the compiled itinerary, agreed
+                    cities, and ticket details as structured inputs. Zoom and Gmail were read-only. Notion is where
+                    the action happens.
+                  </p>
+
+                  <p><strong>Step 5 — You get the result</strong></p>
+                  <p>
+                    Your Notion page is updated. Complete itinerary. Ticket details. Day-by-day plan. Everything in
+                    one place — exactly how you wanted it.
+                  </p>
+
+                  <p>Here's a simple workflow diagram of the following steps —</p>
+
+                  <!-- Architecture diagram - full width inline -->
+                  <img src="../images/mcp-architecture.png"
+                    style="width:100%;display:block;margin:16px 0;border-radius:4px;"
+                    alt="MCP workflow diagram showing Host, Clients, and Servers">
+
+                  <p>
+                    No tab switching. No copy-pasting. No wasted Sunday.
+                  </p>
+
+                  <blockquote>
+                    Three servers. Three <code>tools/list</code> calls. Three reads. One write. One message from you.
+                    That's the real power of MCP — your AI doesn't just answer questions; it orchestrates your
+                    entire digital life with surgical precision.
+                  </blockquote>
+
+                  <blockquote class="callout">
+                    The tool names used above are simplified to help illustrate how the flow works. The actual names
+                    vary depending on which MCP server you have installed and how it was built.
+                  </blockquote>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Wrapping Up -->
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:16px;width:100%;vertical-align:middle">
+                  <h2><span class="highlight-heading">Wrapping Up</span></h2>
+                  <p>
+                    MCP servers are not just a developer tool or a tech industry buzzword. They are the missing piece
+                    that the AI world has needed for a long time.
+                  </p>
+                  <p>
+                    For years, AI was smart but isolated — sitting in a tab, disconnected from everything that
+                    actually matters to you. Your files, your meetings, your emails, your plans. All of it out of
+                    reach.
+                  </p>
+                  <p>
+                    MCP changes that. It gives AI a standardised way to reach into every app you use, understand your
+                    real context, and actually do things on your behalf. Not just answer questions — but get things
+                    done.
+                  </p>
+                  <p>
+                    And the best part? You don't need to be a developer to benefit from it. You just need the right
+                    servers connected and one good prompt.
+                  </p>
+                  <p>
+                    The ecosystem is still young and growing fast — new servers are being built every week, more apps
+                    are adding official support, and the experience is getting smoother by the month. The foundations
+                    are solid and the direction is clear.
+                  </p>
+                  <blockquote>
+                    We are moving from AI that talks to AI that acts. MCP is what makes that possible.
+                  </blockquote>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table
+            style="width:100%;border:0;border-spacing:0;border-collapse:separate;margin-right:auto;margin-left:auto;">
+            <tbody>
+              <tr>
+                <td style="padding:0">
+                  <br>
+                  <p style="text-align:right;font-size:small;">
+                    <a href="index.html">All articles</a>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>
